@@ -22,7 +22,7 @@ public class App
         new Hashtable<String,String>();
         ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
         User user = (User) ac.getBean("user");
-        HashMap<String,String> result = new HashMap<>();
+        //HashMap<String,String> result = new HashMap<>();
 
         System.out.println( "Hello World!" );
     }

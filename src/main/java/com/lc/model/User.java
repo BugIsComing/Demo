@@ -1,5 +1,6 @@
 package com.lc.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Component;
 public class User {
     private String name;
     private String password;
+
+    @Autowired
+    private Student student;
 
     public User() {
     }

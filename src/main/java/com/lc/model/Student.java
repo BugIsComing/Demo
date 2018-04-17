@@ -1,5 +1,7 @@
 package com.lc.model;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
+
 /**
  * @Author:LC
  * @Date:Created in 22:46 2018/1/24
@@ -10,9 +12,11 @@ public class Student {
     private int age;
 
     public Student() {
+        System.out.println("Student()");
     }
 
     public Student(String name, int age) {
+        System.out.println("Student(String name, int age)");
         this.name = name;
         this.age = age;
     }
@@ -22,6 +26,7 @@ public class Student {
     }
 
     public void setName(String name) {
+        System.out.println("setName(String name)");
         this.name = name;
     }
 

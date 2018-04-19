@@ -13,7 +13,7 @@
 -->
     <!--只调用默认构造方法-->
     <bean id = "student" class="com.lc.model.Student"/>
-    <!--先调用默认构造方法，然后调用set方法-->
+    <!--先调用默认构造方法，然后调用set方法，对应field的set方法必须存在，否则报错-->
     <bean id = "studentA" class="com.lc.model.Student">
         <property name="name" value="LC"></property>
     </bean>

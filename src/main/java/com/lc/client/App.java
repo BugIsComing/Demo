@@ -41,7 +41,7 @@ public class App {
 //            System.out.println( tableSizeFor(i) + " " +equalToTableSizeFor(i));
 //        }
 
-        // Map<String,String> map = new HashMap<String, String>() ;
+         Map<String,String> map = new HashMap<String, String>() ;
 //        Map<String, String> map2 = new Hashtable<String, String>();
 //        Timer tm = new Timer();
 //        map2.put(null, "ad");

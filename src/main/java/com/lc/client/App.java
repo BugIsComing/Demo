@@ -1,11 +1,8 @@
 package com.lc.client;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Hello world!
@@ -41,13 +38,13 @@ public class App {
 //            System.out.println( tableSizeFor(i) + " " +equalToTableSizeFor(i));
 //        }
 
-         Map<String,String> map = new HashMap<String, String>() ;
+        //Map<String,String> map = new HashMap<String, String>() ;
 //        Map<String, String> map2 = new Hashtable<String, String>();
 //        Timer tm = new Timer();
 //        map2.put(null, "ad");
         //    ConcurrentHashMap<String,String> map1 = new ConcurrentHashMap<String, String>() ;
 //        new Hashtable<String, String>();
-         ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+        //ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
 //         User user = (User) ac.getBean("user");
 //        HashMap<String,String> result = new HashMap<>();
 
@@ -66,6 +63,33 @@ public class App {
 //        System.out.println("Hello World!" + url);
 //        int probability = Integer.parseInt(" 99");
 //        System.out.println("Hello World!" + probability);
+//        try {
+//            URL url = new URL("https://www.univstar.com/v1/pc/qrcode?pid=58aee84902094a27a3627e6a191023c5&t=1524558660776");
+//            System.out.println("LCLC");
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            URI uri = new URI("https://www.univstar.com/v1/pc/qrcode?pid=58aee84902094a27a3627e6a191023c5&t=1524558660776");
+//
+//            System.out.println(uri.getQuery());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
+//        String temp = "08553962231|^|125301253041|^|否|^||^||^|2018-05-02 22:28:34|^|2018-05-03 04:27:05|^|21511|^|1|^|外呼日志|^|否|^|0030003|^||^||^|3|^||^||^||^||^||^||^|";
+//        String[] arr = temp.split("\\|\\^\\|", -1);
+//        System.out.println(arr.length);
+//        Integer o = -1234;
+//        System.out.println(Integer.toUnsignedString(-1234));
+
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String beginTime = "2018-05-24 09:44:36";
+//        try {
+//            System.out.println(df.parse(beginTime).getTime());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 }

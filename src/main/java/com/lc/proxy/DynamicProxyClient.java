@@ -10,6 +10,9 @@ public class DynamicProxyClient {
         System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
         RealSubject realSubject = new RealSubject();
         ProxyHandler proxyHandler = new ProxyHandler(realSubject);
+        /**
+         * 动态生成class文件，其实现的接口通过newProxyInstance的第二个参数决定
+         */
         Subject proxySubject = (Subject) java.lang.reflect.Proxy.newProxyInstance(RealSubject.class.getClassLoader(), RealSubject.class.getInterfaces(), proxyHandler);
         proxySubject.request();
     }

@@ -1,8 +1,19 @@
 package com.lc.client;
 
+import com.lc.tools.FfmpegUtil;
+import org.apache.commons.lang.StringUtils;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Hello world!
@@ -91,5 +102,130 @@ public class App {
 //        } catch (ParseException e) {
 //            e.printStackTrace();
 //        }
+
+        String srcUrl = "http://10.25.174.50/wave/voiceprint/2018080215332921118880406378.wav";
+        String dstPath = "";
+
+
+        String fileName = srcUrl.substring(srcUrl.lastIndexOf('/') + 1);
+        File saveDir;
+        File file = null;
+        try {
+
+            dstPath = "E:\\";
+            URL url = new URL(srcUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            //设置超时间为3秒
+            conn.setConnectTimeout(3 * 1000);
+            //防止屏蔽程序抓取而返回403错误
+            conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+            //得到输入流
+            InputStream inputStream = conn.getInputStream();
+            //获取自己数组
+            byte[] getData = readInputStream(inputStream);
+
+            //文件保存位置
+            saveDir = new File(dstPath);
+            if (!saveDir.exists()) {
+                saveDir.mkdir();
+            }
+            file = new File(saveDir + File.separator + fileName);
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(getData);
+            if (fos != null) {
+                fos.close();
+            }
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            /**
+             * 转换文件格式
+             */
+            String ffmpegPath = dstPath + File.separator + "ffmpeg.exe";
+            String path = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(File.separator));
+            FfmpegUtil.V3ToWav(ffmpegPath, file.getName(), path, path + File.separator + "trans");
+
+            /**
+             * 读取文件流
+             */
+            byte[] buffer;
+            file = new File(path + File.separator + "trans" + File.separator + fileName);
+            int length = (int) file.length();
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
+            byte[] b = new byte[length];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            fis.close();
+            bos.close();
+            buffer = bos.toByteArray();
+            String encodeText = org.apache.commons.codec.binary.Base64.encodeBase64String(buffer);
+            byte[] encodeText2 = org.apache.commons.codec.binary.Base64.decodeBase64(encodeText);
+            String encodeText3 = org.apache.commons.codec.binary.Base64.encodeBase64String(encodeText2);
+            System.out.println(encodeText3);
+
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+        }
+
+
+    }
+
+    /**
+     * 从输入流中获取字节数组
+     *
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
+    public static byte[] readInputStream(InputStream inputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        while ((len = inputStream.read(buffer)) != -1) {
+            bos.write(buffer, 0, len);
+        }
+        bos.close();
+        return bos.toByteArray();
+    }
+
+    /**
+     * 将采用点复制，8k-->16k
+     *
+     * @param orig
+     * @return
+     */
+    public static byte[] convert8kTo16k(byte[] orig) {
+        byte[] dest = new byte[]{};
+        for (int j = 0; j < orig.length; j = j + 2) {
+            byte[] byte2 = new byte[2];
+            byte2[1] = orig[j + 1];
+            byte2[0] = orig[j];
+            dest = append(dest, byte2);
+            dest = append(dest, byte2);
+        }
+        return dest;
+    }
+
+
+    /**
+     * 拼接byte[]
+     *
+     * @param orig 原始byte[]
+     * @param dest 需要拼接的数据
+     * @return byte[]
+     */
+    public static byte[] append(byte[] orig, byte[] dest) {
+
+        byte[] newByte = new byte[orig.length + dest.length];
+
+        System.arraycopy(orig, 0, newByte, 0, orig.length);
+        System.arraycopy(dest, 0, newByte, orig.length, dest.length);
+
+        return newByte;
+
+
     }
 }

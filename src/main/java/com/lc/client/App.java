@@ -102,73 +102,9 @@ public class App {
 //        } catch (ParseException e) {
 //            e.printStackTrace();
 //        }
-
-        String srcUrl = "http://10.25.174.50/wave/voiceprint/2018080215332921118880406378.wav";
-        String dstPath = "";
-
-
-        String fileName = srcUrl.substring(srcUrl.lastIndexOf('/') + 1);
-        File saveDir;
-        File file = null;
-        try {
-
-            dstPath = "E:\\";
-            URL url = new URL(srcUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            //设置超时间为3秒
-            conn.setConnectTimeout(3 * 1000);
-            //防止屏蔽程序抓取而返回403错误
-            conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
-            //得到输入流
-            InputStream inputStream = conn.getInputStream();
-            //获取自己数组
-            byte[] getData = readInputStream(inputStream);
-
-            //文件保存位置
-            saveDir = new File(dstPath);
-            if (!saveDir.exists()) {
-                saveDir.mkdir();
-            }
-            file = new File(saveDir + File.separator + fileName);
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(getData);
-            if (fos != null) {
-                fos.close();
-            }
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            /**
-             * 转换文件格式
-             */
-            String ffmpegPath = dstPath + File.separator + "ffmpeg.exe";
-            String path = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(File.separator));
-            FfmpegUtil.V3ToWav(ffmpegPath, file.getName(), path, path + File.separator + "trans");
-
-            /**
-             * 读取文件流
-             */
-            byte[] buffer;
-            file = new File(path + File.separator + "trans" + File.separator + fileName);
-            int length = (int) file.length();
-            FileInputStream fis = new FileInputStream(file);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
-            byte[] b = new byte[length];
-            int n;
-            while ((n = fis.read(b)) != -1) {
-                bos.write(b, 0, n);
-            }
-            fis.close();
-            bos.close();
-            buffer = bos.toByteArray();
-            String encodeText = org.apache.commons.codec.binary.Base64.encodeBase64String(buffer);
-            byte[] encodeText2 = org.apache.commons.codec.binary.Base64.decodeBase64(encodeText);
-            String encodeText3 = org.apache.commons.codec.binary.Base64.encodeBase64String(encodeText2);
-            System.out.println(encodeText3);
-
-        } catch (Exception e) {
-           System.out.println(e.getMessage());
-        }
+        String tag = "海林。";
+        tag = tag.replaceAll("[\\pP‘’“”]", "");
+        System.out.println(tag);
 
 
     }

@@ -3,6 +3,9 @@ package com.lc.client;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 
 /**
  * Hello world!
@@ -95,6 +98,15 @@ public class App {
         tag = tag.replaceAll("[\\pP‘’“”]", "");
         System.out.println(tag);
 
+        ArrayList<String> al = new ArrayList<>();
+        al.add("2");
+        al.add("1");
+        LinkedList<String> ll = new LinkedList<>();
+        ll.add("2");
+        ll.add("1");
+
+        Collections.binarySearch(al,"2");
+        Collections.binarySearch(ll,"2");
 
     }
 

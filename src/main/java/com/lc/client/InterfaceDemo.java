@@ -1,7 +1,5 @@
 package com.lc.client;
 
-import com.lc.proxy.Subject;
-
 /**
  * 测试接口的多继承关系,测试包括InterfaceDemo和InterfaceDemoClient
  *

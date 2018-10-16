@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -101,6 +102,10 @@ public class App {
         ArrayList<String> al = new ArrayList<>();
         al.add("2");
         al.add("1");
+        Iterator it = al.iterator();
+        while (it.hasNext()){
+            System.out.println(it.next());
+        }
         LinkedList<String> ll = new LinkedList<>();
         ll.add("2");
         ll.add("1");

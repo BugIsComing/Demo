@@ -24,6 +24,7 @@ public class ThreadDemo {
         JobCallable jobCallable = new JobCallable();
         FutureTask<Integer> ft = new FutureTask<>(jobCallable);
         new Thread(ft).start();
+        System.out.println(ft.isCancelled());
         try {
             System.out.println(ft.get());
         } catch (InterruptedException e) {
@@ -64,6 +65,10 @@ class JobCallable implements Callable<Integer> {
         for (int i = 0; i <= 100000; i++) {
             sum += i;
         }
+        //如果线程一直不结束，则父线程会被一直阻塞
+//        while(true) {
+//            sleep(2000);
+//        }
         sleep(2000);
         return sum;
     }

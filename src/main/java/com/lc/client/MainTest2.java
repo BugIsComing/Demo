@@ -14,5 +14,23 @@ public class MainTest2 {
         unzipper.setSrc(theZIPFile);
         unzipper.setDest(theTargetFolder);
         unzipper.execute();
+        Child child = new Child();
+        Parent.getA(2);
+        child.printP();
+        child.PrintC();
     }
-} 
+}
+class Parent{
+    public static void getA(int a){
+
+    }
+    public void printP(){
+
+    }
+}
+
+class Child extends Parent{
+    public void PrintC(){
+        printP();
+    }
+}

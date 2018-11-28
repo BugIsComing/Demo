@@ -69,5 +69,17 @@ public class ReentrantLockDemo {
             e.printStackTrace();
         }
         System.out.println("main over!");
+
+        //lockDemo.lockTwice();
+
+    }
+    public void lockTwice(){
+        lock.lock();
+        System.out.println("first lock!");
+        lock.lock();
+        System.out.println("second lock!");
+        lock.unlock();
+        lock.unlock();
+
     }
 }

@@ -3,10 +3,7 @@ package com.lc.client;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Hello world!
@@ -95,23 +92,32 @@ public class App {
 //        } catch (ParseException e) {
 //            e.printStackTrace();
 //        }
-        String tag = "海林。";
-        tag = tag.replaceAll("[\\pP‘’“”]", "");
-        System.out.println(tag);
-
-        ArrayList<String> al = new ArrayList<>();
-        al.add("2");
-        al.add("1");
-        Iterator it = al.iterator();
-        while (it.hasNext()){
-            System.out.println(it.next());
+//        String tag = "海林。";
+//        tag = tag.replaceAll("[\\pP‘’“”]", "");
+//        System.out.println(tag);
+//
+//        ArrayList<String> al = new ArrayList<>();
+//        al.add("2");
+//        al.add("1");
+//        Iterator it = al.iterator();
+//        while (it.hasNext()){
+//            System.out.println(it.next());
+//        }
+//        LinkedList<String> ll = new LinkedList<>();
+//        ll.add("2");
+//        ll.add("1");
+//
+//        Collections.binarySearch(al,"2");
+//        Collections.binarySearch(ll,"2");
+        Scanner sc = new Scanner(System.in);
+        String str;
+        while (true){
+            str = sc.next();
+            str = str.replace("吗","");
+            str = str.replace("?","!");
+            str = str.replace("? ","!");
+            System.out.println(str);
         }
-        LinkedList<String> ll = new LinkedList<>();
-        ll.add("2");
-        ll.add("1");
-
-        Collections.binarySearch(al,"2");
-        Collections.binarySearch(ll,"2");
 
     }
 

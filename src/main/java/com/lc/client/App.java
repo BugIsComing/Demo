@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Hello world!
@@ -109,16 +110,86 @@ public class App {
 //
 //        Collections.binarySearch(al,"2");
 //        Collections.binarySearch(ll,"2");
-        Scanner sc = new Scanner(System.in);
-        String str;
-        while (true){
-            str = sc.next();
-            str = str.replace("吗","");
-            str = str.replace("?","!");
-            str = str.replace("? ","!");
-            System.out.println(str);
-        }
+//        Scanner sc = new Scanner(System.in);
+//        String str;
+//        while (true){
+//            str = sc.next();
+//            str = str.replace("吗","");
+//            str = str.replace("?","!");
+//            str = str.replace("? ","!");
+//            System.out.println(str);
+//        }
+        //打印40，而不是20
+        System.out.println(test1());
+        System.out.println(test3());
+        System.out.println(test4().toString());
 
+    }
+
+    /**
+     *测试try  catch  finally语句
+     */
+    public static int test1() {
+        int b = 20;
+        try {
+            return test2();
+        } catch (Exception e) {
+            //打印的是20
+            System.out.println(b);
+        } finally {
+            //打印的是40，说明return语句已经执行了再执行finally
+            System.out.println(b);
+            b += 100;
+            //如果finally中有return语句，该方法将返回finally中的return语句，而不是其他
+            return b;
+        }
+        //return b;
+    }
+
+    public static int test2() {
+        int b = 20;
+        System.out.println("return");
+        return b;
+    }
+
+    /**
+     * finally中修改了值但没有影响try中的return语句返回值
+     * 原因是基本类型是传值不是传引用
+     * @return
+     */
+    public static int test3() {
+        int b = 20;
+        try {
+            return b;
+        } catch (Exception e) {
+            //打印的是20
+            System.out.println(b);
+        } finally {
+            //打印的是40，说明return语句已经执行了再执行finally
+            System.out.println(b);
+            b += 100;
+        }
+        return b;
+    }
+
+    /**
+     * finally中修改了值直接影响try中的return 语句
+     * 原因是返回值是传引用
+     * @return
+     */
+    public static Map<String,String> test4() {
+        Map<String,String> map = new HashMap<>();
+        try {
+            map.put("1","2");
+            return map;
+        } catch (Exception e) {
+
+        } finally {
+            //打印的是40，说明return语句已经执行了再执行finally
+            System.out.println(map.toString());
+            map.put("1","3");
+        }
+        return map;
     }
 
     /**

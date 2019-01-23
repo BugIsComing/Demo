@@ -26,9 +26,6 @@ public class CountWord {
     static HashMap<String, HashMap<String, Integer>> frequency = new HashMap<>();
 
     public static void main(String[] args) {
-        /**
-         * 提前预处理将多个文件分配在多个子目录下
-         */
         for (int i = 1; i <= THREAD_NUMBER; i++) {
             new Thread(new CountWorker("E:\\lc\\" + i)).start();
         }
@@ -49,17 +46,17 @@ public class CountWord {
      * @return
      */
     private static HashMap<String, Integer> getCount() {
-        HashMap<String, Integer> result = new HashMap<>();
-        Iterator iter = frequency.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
+        HashMap<String, Integer> result = new HashMap<>(16);
+        Iterator iterator = frequency.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator.next();
             HashMap<String, Integer> val = (HashMap<String, Integer>) entry.getValue();
-            Iterator innerIter = val.entrySet().iterator();
-            String key ;
-            while (innerIter.hasNext()) {
-                Map.Entry innerEntry = (Map.Entry) innerIter.next();
+            Iterator innerIterator = val.entrySet().iterator();
+            String key;
+            while (innerIterator.hasNext()) {
+                Map.Entry innerEntry = (Map.Entry) innerIterator.next();
                 key = (String) innerEntry.getKey();
-                int count = ((Integer)innerEntry.getValue()).intValue();
+                int count = ((Integer) innerEntry.getValue()).intValue();
                 if (result.containsKey(key)) {
                     count += result.get(key);
                 }
@@ -75,22 +72,31 @@ public class CountWord {
      * @param result
      */
     private static void order(HashMap<String, Integer> result) {
-        PriorityQueue<OrderElement> orderResult = new PriorityQueue<>();
-        Iterator iter = result.entrySet().iterator();
+        PriorityQueue<OrderElement> orderResult = new PriorityQueue<>(ORDER_NUMBER);
+        Iterator iterator = result.entrySet().iterator();
         String key;
-        Integer value ;
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
+        Integer value;
+        int i = 0;
+        OrderElement temp;
+        while (iterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator.next();
             key = (String) entry.getKey();
             value = (Integer) entry.getValue();
-            orderResult.offer(new OrderElement(key, value));
+            //前100个数据直接入队列
+            if (i < ORDER_NUMBER) {
+                orderResult.offer(new OrderElement(key, value));
+            } else {
+                temp = orderResult.peek();
+                //大于堆顶元素才入队列，有一个问题就是如果和堆顶元素相等该如何处理
+                if (value.intValue() > temp.getFrequency()) {
+                    orderResult.offer(new OrderElement(key, value));
+                }
+            }
+            i++;
         }
-        int index = 0;
-        OrderElement temp ;
-        while (index < ORDER_NUMBER && !orderResult.isEmpty()) {
+        while (!orderResult.isEmpty()) {
             temp = orderResult.poll();
-            System.out.println(temp.getWord() + " " + temp.getFrequence());
-            index++;
+            System.out.println(temp.getWord() + " " + temp.getFrequency());
         }
     }
 
@@ -98,11 +104,11 @@ public class CountWord {
 
 class OrderElement implements Comparable<OrderElement> {
     private String word;
-    private int frequence;
+    private int frequency;
 
     public OrderElement(String word, int frequence) {
         this.word = word;
-        this.frequence = frequence;
+        this.frequency = frequence;
     }
 
     public String getWord() {
@@ -110,16 +116,16 @@ class OrderElement implements Comparable<OrderElement> {
     }
 
 
-    public int getFrequence() {
-        return frequence;
+    public int getFrequency() {
+        return frequency;
     }
 
     @Override
     public int compareTo(OrderElement o) {
         //降序
-        if (this.getFrequence() > o.getFrequence()) {
+        if (this.getFrequency() > o.getFrequency()) {
             return -1;
-        } else if (this.getFrequence() < o.getFrequence()) {
+        } else if (this.getFrequency() < o.getFrequency()) {
             return 1;
         } else {
             return 0;

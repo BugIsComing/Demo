@@ -1,5 +1,7 @@
 package com.lc.client;
 
+import org.springframework.util.StringUtils;
+
 import java.io.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -13,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2018年11月2日19:52:37
  */
 public class ClearAllComments {
-    ThreadPoolExecutor threadPoolExecutor;
+    private ThreadPoolExecutor threadPoolExecutor;
 
     public void setExecutorService(ThreadPoolExecutor executorService) {
         this.threadPoolExecutor = executorService;
@@ -24,9 +26,9 @@ public class ClearAllComments {
     }
 
     public static void main(String[] args) {
-        String path = "E:\\lc";
+        String path = "D:\\Dmall\\code\\dmall-middle-platform\\dmall-middle-platform-core\\src\\main\\java\\com\\dmall\\middle\\platform\\core\\pojo\\2037";
         ClearAllComments clearAllComments = new ClearAllComments();
-        clearAllComments.setExecutorService(new ThreadPoolExecutor(15, 20, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(250), new ThreadPoolExecutor.AbortPolicy()));
+        clearAllComments.setExecutorService(new ThreadPoolExecutor(15, 20, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(250), new ThreadPoolExecutor.AbortPolicy()));
         /**
          * 处理清理注释的前提是文件里面的注释方式都是正确的
          */
@@ -81,17 +83,15 @@ class ClearWorker implements Runnable {
         if (target == null) {
             return;
         }
-        StringBuffer str = new StringBuffer("");
+        StringBuffer str = new StringBuffer();
         try {
             inputStream = new FileInputStream(target);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        assert inputStream != null;
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        if (bufferedReader == null) {
-            return;
-        }
-        String content = null;
+        String content;
         try {
             while ((content = bufferedReader.readLine()) != null) {
                 if (content.equals("")) {
@@ -122,10 +122,10 @@ class ClearWorker implements Runnable {
     /**
      * 处理一行数据
      *
-     * @param content
-     * @param str
-     * @param state
-     * @return
+     * @param content 输入内容
+     * @param str     输出
+     * @param state   状态标注
+     * @return 返回状态码
      */
     private int doParseLine(String content, StringBuffer str, int state) {
         int ch;
@@ -176,37 +176,46 @@ class ClearWorker implements Runnable {
     }
 
     /**
-     * 获取一个文件的后缀
+     * 获取文件后缀
      *
-     * @param file
-     * @return
+     * @param file 文件
+     * @return 返回文件后缀
      */
     private String getSuffixFromFile(final File file) {
-        if (file == null) {
+        if (isFileInValid(file)) {
             return "";
         }
         String fileName = file.getName();
-        if (fileName == null || fileName.length() == 0) {
-            return "";
-        }
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     /**
-     * 获取不带后缀的文件名
+     * 获取文件名
      *
-     * @param file
-     * @return
+     * @param file 文件
+     * @return 返回文件名
      */
     private String getFileNameWithoutSuffix(final File file) {
-        if (file == null) {
+        if (isFileInValid(file)) {
             return "";
         }
         String fileName = file.getName();
-        if (fileName == null || fileName.length() == 0) {
-            return "";
-        }
         int index = fileName.lastIndexOf('.');
         return fileName.substring(0, index);
+    }
+
+    /**
+     * 检查文件是否合法
+     *
+     * @param file 文件
+     * @return true表示不合法，false表示合法
+     */
+    private Boolean isFileInValid(final File file) {
+        if (file == null) {
+            return Boolean.TRUE;
+        }
+        String fileName = file.getName();
+        if (StringUtils.isEmpty(fileName)) return Boolean.TRUE;
+        return Boolean.FALSE;
     }
 }

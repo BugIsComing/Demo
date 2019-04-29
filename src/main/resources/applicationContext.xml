@@ -1,9 +1,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        default-autowire="byName">
 
+    <context:property-placeholder location="classpath*:/application.properties"/>
     <!--<context:component-scan base-package="com.lc.model"/>-->
     <!--component-scan 包含context:annotation-config，除了这个之外还可以指定被扫描的包，添加component-scan的作用是式地向 Spring 容器注册
         AutowiredAnnotationBeanPostProcessor
@@ -16,6 +18,61 @@
     <!--先调用默认构造方法，然后调用set方法，对应field的set方法必须存在，否则报错-->
     <bean id = "studentA" class="com.lc.model.Student">
         <property name="name" value="LC"></property>
+    </bean>
+    <!-- Jedis连接池的配置对象 -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!--最大空闲数 -->
+        <property name="maxIdle" value="${redis.maxIdle}" />
+        <!--最小空闲数 -->
+        <property name="minIdle" value="${redis.minIdle}" />
+        <!--最大连接数 -->
+        <property name="maxTotal" value="${redis.maxTotal}" />
+        <property name="testOnBorrow" value="true" />
+        <!--最大建立连接等待时间 -->
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+    </bean>
+
+    <!--jedis服务器信息 -->
+    <bean id="jedisShardInfo" class="redis.clients.jedis.JedisShardInfo">
+        <constructor-arg index="0" value="${redis.host}" />
+        <constructor-arg index="1" value="${redis.port}" type="int" />
+        <constructor-arg index="2" value="${redis.timeout}"
+                         type="int" />
+    </bean>
+
+    <!--jedis连接池 -->
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1">
+            <list>
+                <ref bean="jedisShardInfo" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- Redis连接工厂 -->
+    <bean id="jedisConnectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="shardInfo" ref="jedisShardInfo" />
+        <property name="poolConfig" ref="jedisPoolConfig" />
+    </bean>
+
+    <!-- 缓存序列化方式 -->
+    <!--对key的默认序列化器。默认值是StringSerializer -->
+    <bean id="keySerializer"
+          class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+
+    <!--是对value的默认序列化器，默认值是取自DefaultSerializer的JdkSerializationRedisSerializer。 -->
+    <bean id="valueSerializer"
+          class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer" />
+
+    <!-- redis操作模板,对Jedis进行的通用API操作 -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+        <property name="keySerializer" ref="keySerializer" />
+        <property name="valueSerializer" ref="valueSerializer" />
+        <property name="hashKeySerializer" ref="keySerializer" />
+        <property name="hashValueSerializer" ref="valueSerializer" />
     </bean>
 
 </beans>

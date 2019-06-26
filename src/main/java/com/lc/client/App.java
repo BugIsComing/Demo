@@ -3,8 +3,8 @@ package com.lc.client;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Hello world!
@@ -127,7 +127,7 @@ public class App {
     }
 
     /**
-     *测试try  catch  finally语句
+     * 测试try  catch  finally语句
      */
     public static int test1() {
         int b = 20;
@@ -155,6 +155,7 @@ public class App {
     /**
      * finally中修改了值但没有影响try中的return语句返回值
      * 原因是基本类型是传值不是传引用
+     *
      * @return
      */
     public static int test3() {
@@ -175,19 +176,20 @@ public class App {
     /**
      * finally中修改了值直接影响try中的return 语句
      * 原因是返回值是传引用
+     *
      * @return
      */
-    public static Map<String,String> test4() {
-        Map<String,String> map = new HashMap<>();
+    public static Map<String, String> test4() {
+        Map<String, String> map = new HashMap<>();
         try {
-            map.put("1","2");
+            map.put("1", "2");
             return map;
         } catch (Exception e) {
 
         } finally {
             //打印的是40，说明return语句已经执行了再执行finally
             System.out.println(map.toString());
-            map.put("1","3");
+            map.put("1", "3");
         }
         return map;
     }

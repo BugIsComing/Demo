@@ -160,4 +160,57 @@ public class SkipList<T> {
         return builder.toString();
     }
 
+    public String printByLevel() {
+        if (listLevel == 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Level : ").append(listLevel + 1).append('\n');
+        sb.append(printOneLevel(0));
+        for (int i = 1; i <= listLevel; i++) {
+            sb.append('\n');
+            sb.append(printOneLevel(i));
+        }
+        return sb.toString();
+    }
+
+    public String printOneLevel(int level) {
+        SkipListNode<T> first = head;
+        int index = 0;
+        if (level > listLevel) {
+            return "";
+        }
+        while (index < level) {
+            first = first.down;
+            index++;
+        }
+        StringBuilder sb = new StringBuilder();
+        while (first != null) {
+            sb.append(first.key).append(' ');
+            first = first.right;
+        }
+        return sb.toString();
+    }
+
+    public SkipListNode<T> remove(int key) {
+        SkipListNode<T> target = findNode(key);
+        if (target == null) {
+            return null;
+        }
+        SkipListNode<T> targetProxy = target;
+        SkipListNode<T> targetUp;
+        do {
+            targetUp = targetProxy.up;
+            targetProxy.up = null;
+            targetProxy.down = null;
+            //水平连接target左右两个节点
+            horizontalLink(targetProxy.left, targetProxy.right);
+            targetProxy.left = targetProxy.right = null;
+            targetProxy = targetUp;
+        } while (targetProxy != null);
+
+        return target;
+    }
+
+
 }

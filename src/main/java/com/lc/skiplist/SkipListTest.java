@@ -9,6 +9,8 @@ public class SkipListTest {
         skipList.put(4,3);
         skipList.put(8,3);
         skipList.search(6);
-        System.out.println("xx");
+        System.out.println(skipList.printByLevel());
+        skipList.remove(4);
+        System.out.println(skipList.printByLevel());
     }
 }

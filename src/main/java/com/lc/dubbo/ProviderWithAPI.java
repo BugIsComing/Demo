@@ -21,6 +21,7 @@ public class ProviderWithAPI {
 // 当前应用配置
         ApplicationConfig application = new ApplicationConfig();
         application.setName("xxx");
+        application.setOwner("lc");
 
 // 连接注册中心配置
         RegistryConfig registry = new RegistryConfig();

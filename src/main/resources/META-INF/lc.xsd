@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.lc.com/schema/lc"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            targetNamespace="http://www.lc.com/schema/lc">
+
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+
+    <xsd:element name="person" type="personType"></xsd:element>
+    <xsd:complexType name="personType">
+        <xsd:complexContent>
+            <!--所有的自定义类型都必须继承这个identifiedType，其中只包含一个id属性-->
+            <xsd:extension base="beans:identifiedType">
+                <xsd:attribute name="name" type="xsd:string"/>
+                <xsd:attribute name="age" type="xsd:int"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+</xsd:schema>

@@ -8,10 +8,11 @@
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd
         ">
 
-    <dubbo:application name="consumer_app"/>
+    <dubbo:application name="anyname_provider"/>
 
     <dubbo:registry address="zookeeper://112.74.36.223:2181"/>
     <dubbo:consumer timeout="5000"/>
+    <dubbo:protocol name="dubbo" port="20881"/>
     <!--此处的id可以不用和provider中的ref一致-->
     <dubbo:reference id="demoService11" interface="com.lc.dubbo.IProvider"/>
 </beans>

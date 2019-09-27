@@ -14,6 +14,7 @@ import java.io.IOException;
  */
 public class ConsumerWithAPI {
     public static void main(String[] args) {
+        System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
 
         ApplicationConfig application = new ApplicationConfig();
         application.setName("ConsumerWithAPI");

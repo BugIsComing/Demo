@@ -1,8 +1,8 @@
 package com.lc.client;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.springframework.util.Assert;
+
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,10 +120,15 @@ public class App {
 //            System.out.println(str);
 //        }
         //打印40，而不是20
-        System.out.println(test1());
-        System.out.println(test3());
-        System.out.println(test4().toString());
-
+        byte[] bytes = new byte[3];
+        try {
+            new FileInputStream("C:\\exp\\exp\\EXPDPdc.DMP").read(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String bytestr = String.format("%02x", bytes[1]) + String.format("%02x", bytes[2]);
+        System.out.println(bytestr);
+        System.out.println("select nls_charset_name(to_number('" + bytestr + "','xxxx')) from dual");
     }
 
     /**

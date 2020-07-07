@@ -1,10 +1,13 @@
 package com.lc.client;
 
+import org.joda.time.DateTime;
 import org.springframework.util.Assert;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * Hello world!
@@ -119,16 +122,7 @@ public class App {
 //            str = str.replace("? ","!");
 //            System.out.println(str);
 //        }
-        //打印40，而不是20
-        byte[] bytes = new byte[3];
-        try {
-            new FileInputStream("C:\\exp\\exp\\EXPDPdc.DMP").read(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String bytestr = String.format("%02x", bytes[1]) + String.format("%02x", bytes[2]);
-        System.out.println(bytestr);
-        System.out.println("select nls_charset_name(to_number('" + bytestr + "','xxxx')) from dual");
+        Stack<Character> stack = new Stack<>();
     }
 
     /**

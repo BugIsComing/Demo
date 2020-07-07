@@ -26,7 +26,7 @@ public class ClearAllComments {
     }
 
     public static void main(String[] args) {
-        String path = "D:\\Dmall\\code\\dmall-middle-platform\\dmall-middle-platform-core\\src\\main\\java\\com\\dmall\\middle\\platform\\core\\pojo\\2037";
+        String path = "C:\\Users\\dmall_lc\\Desktop\\IO";
         ClearAllComments clearAllComments = new ClearAllComments();
         clearAllComments.setExecutorService(new ThreadPoolExecutor(15, 20, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(250), new ThreadPoolExecutor.AbortPolicy()));
         /**
@@ -94,10 +94,13 @@ class ClearWorker implements Runnable {
         String content;
         try {
             while ((content = bufferedReader.readLine()) != null) {
-                if (content.equals("")) {
+                if (content.equals("") || isLineInValid(content)) {
                     continue;
                 }
                 state = doParseLine(content, str, state);
+            }
+            if(state!=0){
+                throw new Exception("Java file error");
             }
             String suffix = getSuffixFromFile(target);
             String path = target.getPath();
@@ -166,7 +169,7 @@ class ClearWorker implements Runnable {
                 }
             }
         }
-        if (state == 0) {
+        if (state == 0 || state == 2) {
             str.append("\n");
         }
         if (state == 2) {
@@ -217,5 +220,20 @@ class ClearWorker implements Runnable {
         String fileName = file.getName();
         if (StringUtils.isEmpty(fileName)) return Boolean.TRUE;
         return Boolean.FALSE;
+    }
+
+    /**
+     * 判断当前行是否只包含注释
+     *
+     * @param line
+     * @return
+     */
+    private Boolean isLineInValid(String line) {
+        String temp = new String(line);
+        temp = temp.trim();
+        if (temp.indexOf("//") == 0) {
+            return true;
+        }
+        return false;
     }
 }

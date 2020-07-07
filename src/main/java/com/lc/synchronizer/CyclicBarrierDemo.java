@@ -4,6 +4,8 @@ import java.util.concurrent.*;
 
 /**
  * 学习CyclicBarrier
+ * CyclicBarrier适合多个线程之间互相等待
+ * CyclicBarrier没有实现AQS，通过ReentrantLock和Condition实现
  *
  * @author lc
  * @date 2018年12月14日12:57:20
@@ -11,6 +13,9 @@ import java.util.concurrent.*;
 public class CyclicBarrierDemo {
     private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(4, 10, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
     private static final CyclicBarrier cb = new CyclicBarrier(4, new Runnable() {
+        /**
+         * 这个Runnable会被最后一个执行await操作使得state==0的线程直接调用，不会新增加线程
+         */
         @Override
         public void run() {
             System.out.println("寝室四兄弟一起出发去球场");
@@ -29,6 +34,10 @@ public class CyclicBarrierDemo {
             System.out.println(name + "开始从宿舍出发");
             try {
                 Thread.sleep(1000);
+                /**
+                 * 当await操作使state==0时，首先新建一个generation（后代，其实就是下一个栅栏barrier），
+                 * 然后会唤醒挂在condition上的其他线程
+                 */
                 cb.await();//拦截线程
                 System.out.println(name + "从楼底下出发");
                 Thread.sleep(1000);

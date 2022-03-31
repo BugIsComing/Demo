@@ -24,7 +24,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>4.3.10.RELEASE</spring.version>
+    <spring.version>5.3.18</spring.version>
     <spring.data.redis.version>2.1.6.RELEASE</spring.data.redis.version>
     <junit.version>4.12</junit.version>
     <joda.time.version>2.10</joda.time.version>
